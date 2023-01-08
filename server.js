@@ -4,6 +4,7 @@ import express from 'express'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import logger from 'morgan'
+import methodOverride from 'method-override'
 import './config/database.js'
 // import routers
 import { router as indexRouter } from './routes/index.js'
@@ -18,6 +19,10 @@ app.set(
   path.join(path.dirname(fileURLToPath(import.meta.url)), 'views')
 )
 app.set('view engine', 'ejs')
+app.use(function(req, res, next) {
+  req.time = new Date().toLocaleTimeString()
+  next()
+})
 
 // middleware
 app.use(logger('dev'))
@@ -28,6 +33,7 @@ app.use(
     path.join(path.dirname(fileURLToPath(import.meta.url)), 'public')
   )
 )
+app.use(methodOverride('_method'))
 
 // mounted routers
 app.use('/', indexRouter)

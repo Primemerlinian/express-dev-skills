@@ -7,9 +7,10 @@ function index(req, res) {
   .then(skills => { 
     res.render('skills/index', {
       skills: skills,
+      time: req.time,
     })
   })
-  .catch(error => { // If there's an error, console.log it and redirect back home!
+  .catch(error => { 
     console.log(error)
     res.redirect('/')
   })
@@ -43,6 +44,17 @@ function show(req, res) {
   })
 }
 
+function deleteSkill(req, res) {
+  Skill.findByIdAndDelete(req.params.id)
+  .then(skills => {
+    res.redirect('/skills')
+  })
+  .catch(error => {
+    console.log(error)
+    res.redirect('/skills')
+  })
+}
+
 
 
 export {
@@ -50,4 +62,5 @@ export {
   newSkill as new,
   create,
   show,
+  deleteSkill as delete, 
 }
